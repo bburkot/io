@@ -28,10 +28,7 @@ public class Trip {
 	
 	@Column(name="trip_id", length=30)
 	private String tripId;
-	
-	@Column(name="taxi_id")
-	private Integer taxiId;
-	
+		
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name="call_type", columnDefinition="smallint")
 	private CallType callType;
@@ -42,7 +39,17 @@ public class Trip {
 	@Column(name="ORIGIN_STAND")
 	private Integer originStand;
 		
+	@Column(name="taxi_id")
+	private Integer taxiId;
+
 	private Date timestamp;
+	
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name="day_type", columnDefinition="smallint")
+	private DayType dayType;
+	
+	@Column(name="missing_data")
+	private boolean missingData;
 
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="route_id")
@@ -62,23 +69,29 @@ public class Trip {
  	
 	
 	
-	public Trip(){}	
-	public Trip(Integer taxiId, CallType callType, Integer originCall,
-			Integer originStand, Date timestamp, String route, 
-			BigDecimal startLat, BigDecimal startLong, 
-			BigDecimal endLat, BigDecimal endLong) {
-
-		this.taxiId = taxiId;
+	public Trip(){}
+	public Trip(String tripId, CallType callType, Integer originCall,
+			Integer originStand, Integer taxiId, Date timestamp,
+			DayType dayType, boolean missingData, Route route,
+			BigDecimal startLat, BigDecimal startLong, BigDecimal endLat,
+			BigDecimal endLong) {
+		
+		this.tripId = tripId;
 		this.callType = callType;
 		this.originCall = originCall;
 		this.originStand = originStand;
+		this.taxiId = taxiId;
 		this.timestamp = timestamp;
-		this.route = new Route(route);
+		this.dayType = dayType;
+		this.missingData = missingData;
+		this.route = route;
 		this.startLat = startLat;
 		this.startLong = startLong;
 		this.endLat = endLat;
 		this.endLong = endLong;
 	}
+		
+
 	
 	
 	
@@ -130,5 +143,16 @@ public class Trip {
 	}
 	public void setRoute(Route route) {
 		this.route = route;
+	}
+	
+	@Override
+	public String toString() {
+		return "Trip [id=" + id + ", tripId=" + tripId + ", callType="
+				+ callType + ", originCall=" + originCall + ", originStand="
+				+ originStand + ", taxiId=" + taxiId + ",\ntimestamp="
+				+ timestamp + ", dayType=" + dayType + ", missingData="
+				+ missingData + ", route=" + route + ", startLat=" + startLat
+				+ ",\nstartLong=" + startLong + ", endLat=" + endLat
+				+ ", endLong=" + endLong + "]";
 	}
 }
