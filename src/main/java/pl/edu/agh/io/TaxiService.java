@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
 
 import pl.edu.agh.io.pojo.CallType;
 import pl.edu.agh.io.pojo.DayType;
@@ -38,6 +39,9 @@ public class TaxiService {
     public static void loadData(String filename){    
     	Date startDate = new Date();
     	try {
+    		Session session = HibernateUtil.getSessionFactory().openSession();
+    		session.beginTransaction();
+    		
 			FileReader fr = new FileReader(filename);
 			BufferedReader br = new BufferedReader(fr);
 			
@@ -83,10 +87,12 @@ public class TaxiService {
 						origin_stand, taxi_id, timestamp, DayType.fromChar(day_type), 
 						missing_data, new Route(route), startLat, startLong, endLat, endLong);
 	
-				HibernateUtil.saveOrUpdate(trip);
+				session.save(trip);
 			}
 			System.out.println("Samples: " + lines);
 			fr.close();
+			session.getTransaction().commit();
+			session.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
