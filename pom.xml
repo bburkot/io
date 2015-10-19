@@ -25,7 +25,14 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.4-1201-jdbc41</version>
-		</dependency>		
+		</dependency>	
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>microsoft</groupId> -->
+<!-- 			<artifactId>sqljdbc4</artifactId> -->
+<!-- 			<version>1.0</version> -->
+<!-- 		</dependency> -->
+			
 		<dependency>
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>

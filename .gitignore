@@ -18,7 +18,7 @@ src/main/java/cpe/AppCPE.java
 
 
 
-src/main/resources/data.csv
+src/main/resources/*.csv
 src/main/resources/schema/*
 
 logs/
