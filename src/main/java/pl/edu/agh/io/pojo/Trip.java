@@ -67,6 +67,8 @@ public class Trip {
 		inverseJoinColumns = { @JoinColumn(name = "point_ID")})
 	private List<Point> route;
  	
+	@Column(name="duration_in_seconds")
+	private long duration;
 	
 	
 	public Trip(){}
@@ -93,6 +95,20 @@ public class Trip {
 	
 	
 	// getters and setters
+	/**
+	 * @return start time in seconds
+	 */
+	public long getStartTime() {
+		return timestamp.getTime()/1000;
+	}
+	/**
+	 * @return end time in seconds
+	 */
+	public long getEndTime() {
+		return getStartTime() + getDuration();
+	}
+
+	
 	public long getId() {
 		return id;
 	}
@@ -152,5 +168,29 @@ public class Trip {
 	}
 	public void setEnd(Point end) {
 		this.end = end;
+	}
+	@Override
+	public String toString() {
+		return "Trip [id=" + id + ", tripId=" + tripId + ", taxiId=" + taxiId
+				+ ", timestamp=" + timestamp + ", start=" + start + ", end="
+				+ end + "]";
+	}
+	public String toStringShort() {
+		return "[" +getId() + " " + getTimestamp().getTime() + "]";
+	}
+	public Long getDuration() {
+		return duration;
+	}
+	/**
+	 * @return duration time in milliseconds
+	 */
+	public Long getDurationMills() {
+		return duration * 1000;
+	}
+	/**
+	 * @return duration time in seconds
+	 */
+	public void setDuration(Long duration) {
+		this.duration = duration;
 	}
 }

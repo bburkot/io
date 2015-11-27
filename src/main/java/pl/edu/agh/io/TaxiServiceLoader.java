@@ -30,19 +30,20 @@ import pl.edu.agh.io.pojo.CallType;
 import pl.edu.agh.io.pojo.DayType;
 import pl.edu.agh.io.pojo.Point;
 import pl.edu.agh.io.pojo.Trip;
+import pl.edu.agh.io.util.HibernateUtil;
 
 
 @SuppressWarnings("unused")
 public class TaxiServiceLoader {
 	private static final Logger logger = Logger.getLogger(TaxiServiceLoader.class);
-//	private static final String FILENAME = "src/main/resources/data.csv";
-	private static final String FILENAME = "src/main/resources/train.csv";
+	private static final String FILENAME = "src/main/resources/data.csv";
+//	private static final String FILENAME = "src/main/resources/train.csv";
 	private static final AtomicInteger threadWorking = new AtomicInteger(0);
 	
 	private static final int MAX_THREAD_NUM = 20;
 	private static final int MAX_NUMBER_OBJECTS_TO_SAVE = 1000;
 	
-	private static Pattern POINT_PATTERN = Pattern.compile("(\\d+\\.\\d+,\\s?\\d+\\.\\d+)");
+	private static Pattern POINT_PATTERN = Pattern.compile("(-\\d+\\.\\d+,\\s?\\d+\\.\\d+)");
 	
 	private static ExecutorService es;
 
@@ -68,7 +69,6 @@ public class TaxiServiceLoader {
 		HibernateUtil.getSessionFactory().close();   	
 		 
     	System.exit(0);
-
     }
     
     private static void waitTillThreadFinished(){
@@ -175,14 +175,15 @@ public class TaxiServiceLoader {
     	date.setTime(secs * 1000);
     	return date;
     }
-    
+    private static BigDecimal minFirst, maxFirst;
     public static List<Point> splitRoute(String route, Map<Integer, Point> points){
     	List<Point> list = new ArrayList<Point>();
     	Matcher matcher = POINT_PATTERN.matcher(route);	
     	while(matcher.find()){
     		String s[] = matcher.group().split(",");
     		Point point = new Point(new BigDecimal(s[0].trim()), 
-    				new BigDecimal(s[1].trim()));  		
+    				new BigDecimal(s[1].trim()));  	
+    		   	    		
     		if ( points.containsKey(point.hashCode())){
     			point = points.get(point.hashCode());
     			if (point.getId() <=0)
